@@ -34,7 +34,7 @@ public class AvaliacaoProduto implements Serializable {
 	private Integer nota;
 	
 	@ManyToOne
-	@JoinColumn(name = "autor_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "autor_fk"))
+	@JoinColumn(name = "pessoa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "autor_fk"))
 	private Pessoa autor;
 	
 	@ManyToOne

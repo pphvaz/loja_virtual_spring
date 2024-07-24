@@ -53,7 +53,6 @@ public class Usuario implements UserDetails {
 			foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT,name = "pessoa_fk"))
 	private Pessoa pessoa;
 	
-	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinTable(
 			name = "usuarios_acesso",
