@@ -20,4 +20,8 @@ public class AcessoService {
         return acessoRepo.findById(idRequisitado)
                 .orElse(null);
     }
+
+	public void deleteById(Long id) {
+		acessoRepo.deleteById(id);
+	}
 }

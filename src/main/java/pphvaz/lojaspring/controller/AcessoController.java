@@ -4,6 +4,7 @@ import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,7 +29,12 @@ public class AcessoController {
 	@GetMapping("/{idRequisitado}")
 	private ResponseEntity<Acesso> findById(@PathVariable Long idRequisitado) {
 		Acesso acesso = acessoServ.findById(idRequisitado);
-		return ResponseEntity.ok(acesso);
+		
+		if (acesso != null) {			
+			return ResponseEntity.ok(acesso);
+		} else {			
+			return ResponseEntity.notFound().build();
+		}
 	}
 	
 	
@@ -44,4 +50,18 @@ public class AcessoController {
 				.toUri();
 		return ResponseEntity.created(localizacaoDoNovoAcesso).build();
 	}
+	
+	// DELETAR ACESSO NO DATABASE
+	@DeleteMapping("/{id}")
+	private ResponseEntity<Void> deletarAcesso(@PathVariable Long id) {
+		
+		if (acessoServ.findById(id) != null) {			
+			acessoServ.deleteById(id);
+			return ResponseEntity.noContent().build();
+		} else {			
+			return ResponseEntity.notFound().build();
+		}
+	}
+	
+	
 }

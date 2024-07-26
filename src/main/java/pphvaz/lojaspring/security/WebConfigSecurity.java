@@ -22,7 +22,7 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter implements H
 		web.ignoring()
 			.antMatchers(HttpMethod.GET, "/acesso/{id}", "/acesso")
 			.antMatchers(HttpMethod.POST, "/loja_virtual/acesso", "/acesso")
-			.antMatchers(HttpMethod.DELETE, "/loja_virtual/acesso");
+			.antMatchers(HttpMethod.DELETE, "/acesso/{id}", "/acesso");
 	}
 }
 
