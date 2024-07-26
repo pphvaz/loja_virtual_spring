@@ -15,4 +15,9 @@ public class AcessoService {
 	public Acesso save(Acesso acesso) {
 		return acessoRepo.save(acesso);
 	}
+
+	public Acesso findById(Long idRequisitado) {
+        return acessoRepo.findById(idRequisitado)
+                .orElse(null);
+    }
 }
