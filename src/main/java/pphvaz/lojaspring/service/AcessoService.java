@@ -1,5 +1,7 @@
 package pphvaz.lojaspring.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,5 +25,9 @@ public class AcessoService {
 
 	public void deleteById(Long id) {
 		acessoRepo.deleteById(id);
+	}
+
+	public List<Acesso> buscarAcessoPorDesc(String desc) {
+		return acessoRepo.buscarAcessoPorDesc(desc.trim().toUpperCase());
 	}
 }

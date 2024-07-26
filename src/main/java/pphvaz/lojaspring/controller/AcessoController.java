@@ -1,6 +1,7 @@
 package pphvaz.lojaspring.controller;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class AcessoController {
 
 	
 	// GET ACESSO BY ID
-	@GetMapping("/{idRequisitado}")
+	@GetMapping("**/{idRequisitado}")
 	private ResponseEntity<Acesso> findById(@PathVariable Long idRequisitado) {
 		Acesso acesso = acessoServ.findById(idRequisitado);
 		
@@ -37,10 +38,18 @@ public class AcessoController {
 		}
 	}
 	
+	// BUSCAR ACESSO POR DESCRICAO
+	@GetMapping("**/buscarPorDescricao/{descricao}")
+	private ResponseEntity<List<Acesso>> buscarPorDescricao(@PathVariable String descricao) {
+		
+		List<Acesso> acessos = acessoServ.buscarAcessoPorDesc(descricao);
+		return ResponseEntity.ok(acessos);
+	}
+	
 	
 	// CRIAR ACESSO NO DATABASE
 	@PostMapping
-	private ResponseEntity<Void> salvarAcesso(@RequestBody Acesso acesso, UriComponentsBuilder ucb) { 
+	private ResponseEntity<Acesso> salvarAcesso(@RequestBody Acesso acesso, UriComponentsBuilder ucb) { 
 		
 		Acesso acessoSalvo = acessoServ.save(acesso);
 		
@@ -48,16 +57,18 @@ public class AcessoController {
 				.path("/acesso/{id}")
 				.buildAndExpand(acessoSalvo.getId())
 				.toUri();
-		return ResponseEntity.created(localizacaoDoNovoAcesso).build();
+		return ResponseEntity.created(localizacaoDoNovoAcesso).body(acessoSalvo);
 	}
 	
 	// DELETAR ACESSO NO DATABASE
 	@DeleteMapping("/{id}")
-	private ResponseEntity<Void> deletarAcesso(@PathVariable Long id) {
+	private ResponseEntity<Acesso> deletarAcesso(@PathVariable Long id) {
+		
+		Acesso acesso = acessoServ.findById(id);
 		
 		if (acessoServ.findById(id) != null) {			
 			acessoServ.deleteById(id);
-			return ResponseEntity.noContent().build();
+			return ResponseEntity.ok(acesso);
 		} else {			
 			return ResponseEntity.notFound().build();
 		}

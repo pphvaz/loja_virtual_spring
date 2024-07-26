@@ -5,7 +5,6 @@ import javax.servlet.http.HttpSessionListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -20,7 +19,7 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter implements H
 		
 		// Ignorando URL no momento para não autenticar:
 		web.ignoring()
-			.antMatchers(HttpMethod.GET, "/acesso/{id}", "/acesso")
+			.antMatchers(HttpMethod.GET, "/acesso/{id}", "/acesso", "/acesso/buscarPorDescricao/{descricao}")
 			.antMatchers(HttpMethod.POST, "/loja_virtual/acesso", "/acesso")
 			.antMatchers(HttpMethod.DELETE, "/acesso/{id}", "/acesso");
 	}
