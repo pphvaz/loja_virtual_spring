@@ -10,6 +10,6 @@ import pphvaz.lojaspring.model.Usuario;
 public interface UsuarioRepository extends CrudRepository<Usuario, Long>{
 	
 	
-	@Query(value = "SELECT u FROM Usuario u WHERE u.login = ?!")
+	@Query(value = "SELECT u FROM Usuario u WHERE u.login = ?1")
 	Usuario findUserByLogin(String login);
 }
