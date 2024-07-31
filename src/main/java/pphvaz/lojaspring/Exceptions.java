@@ -1,0 +1,86 @@
+package pphvaz.lojaspring;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import pphvaz.lojaspring.dto.ObjetoErroDto;
+
+/* 
+ INTERCEPTA OS ERROS QUE ACONTECEM NO PROJETO
+*/
+
+@RestControllerAdvice
+@ControllerAdvice
+public class Exceptions extends ResponseEntityExceptionHandler {
+
+	/* Captura Exceções do Projeto */
+	@ExceptionHandler({ Exception.class, RuntimeException.class, Throwable.class })
+	@Override
+	protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
+			HttpStatus status, WebRequest request) {
+
+		ObjetoErroDto objetoErroDto = new ObjetoErroDto();
+
+		String msg = "";
+
+		if (ex instanceof MethodArgumentNotValidException) {
+			List<ObjectError> list = ((MethodArgumentNotValidException) ex).getBindingResult().getAllErrors();
+
+			for (ObjectError objectError : list) {
+				msg += objectError.getDefaultMessage() + "\n";
+			}
+		} else {
+			msg = ex.getMessage();
+		}
+
+		objetoErroDto.setError(msg);
+		objetoErroDto.setCode(status.value() + "==>" + status.getReasonPhrase());
+
+		return new ResponseEntity<Object>(objetoErroDto, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+	/* Captura erro na parte de banco de dados */
+	@ExceptionHandler({ DataIntegrityViolationException.class, ConstraintViolationException.class, SQLException.class })
+	protected ResponseEntity<Object> handleExceptionDataIntegrity(Exception ex) {
+
+		ObjetoErroDto objetoErroDto = new ObjetoErroDto();
+
+		String msg = "";
+
+		if (ex instanceof SQLException) {
+
+			msg = "Erro de SQL do banco: " + ((SQLException) ex).getCause().getCause().getMessage();
+
+		} else if (ex instanceof DataIntegrityViolationException) {
+
+			msg = "Erro de integridade do banco: "
+					+ ((DataIntegrityViolationException) ex).getCause().getCause().getMessage();
+
+		} else if (ex instanceof ConstraintViolationException) {
+
+			msg = "Erro de chave estrangeira: "
+					+ ((ConstraintViolationException) ex).getCause().getCause().getMessage();
+
+		}
+
+		objetoErroDto.setError(msg);
+		objetoErroDto.setCode(HttpStatus.INTERNAL_SERVER_ERROR.toString());
+
+		return new ResponseEntity<Object>(objetoErroDto, HttpStatus.INTERNAL_SERVER_ERROR);
+
+	}
+
+}
