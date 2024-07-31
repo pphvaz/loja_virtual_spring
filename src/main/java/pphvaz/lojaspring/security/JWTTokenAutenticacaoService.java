@@ -1,5 +1,6 @@
 package pphvaz.lojaspring.security;
 
+import java.io.IOException;
 import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,8 +11,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
 import pphvaz.lojaspring.ApplicationContextLoad;
 import pphvaz.lojaspring.model.Usuario;
 import pphvaz.lojaspring.repository.UsuarioRepository;
@@ -23,7 +26,7 @@ import pphvaz.lojaspring.repository.UsuarioRepository;
 public class JWTTokenAutenticacaoService {
 
 	/* TEMPO DE VALIDADE PARA EXPIRAR O TOKEN 11 DIAS*/
-	private static final long EXPIRATION_TIME = 1000000000;
+	private static final long EXPIRATION_TIME = 950400000; 
 	
 	private static final String SECRET = "doqhwwsad1!";
 	
@@ -54,38 +57,45 @@ public class JWTTokenAutenticacaoService {
 	
 	/* Retorna o usuario validado com token ou retorna null*/
 	
-	public Authentication getAuthentication(HttpServletRequest request, HttpServletResponse response ) {
+	public Authentication getAuthentication(HttpServletRequest request, HttpServletResponse response ) throws IOException {
 		
 		String token = request.getHeader(HEADER_STRING);
 		
-		if (token != null) {
+		try {
 			
-			String tokenLimpo = token.replace(TOKEN_PREFIX, "").trim();
-			
-			/* Faz a validacao do token do usuario e obtem o user */
-			
-			String user = Jwts.parser()
-					.setSigningKey(SECRET)
-					.parseClaimsJws(tokenLimpo)
-					.getBody().getSubject();
-			
-			if (user != null) {
+			if (token != null) {
 				
-				Usuario usuario = ApplicationContextLoad
-						.getApplicationContext()
-						.getBean(UsuarioRepository.class).findUserByLogin(user);
+				String tokenLimpo = token.replace(TOKEN_PREFIX, "").trim();
 				
-				if(usuario != null) {
-					return new UsernamePasswordAuthenticationToken(
-							usuario.getLogin(), 
-							usuario.getSenha(), 
-							usuario.getAuthorities());
-				} 
+				/* Faz a validacao do token do usuario e obtem o user */
+				
+				String user = Jwts.parser()
+						.setSigningKey(SECRET)
+						.parseClaimsJws(tokenLimpo)
+						.getBody().getSubject();
+				
+				if (user != null) {
+					
+					Usuario usuario = ApplicationContextLoad
+							.getApplicationContext()
+							.getBean(UsuarioRepository.class).findUserByLogin(user);
+					
+					if(usuario != null) {
+						return new UsernamePasswordAuthenticationToken(
+								usuario.getLogin(), 
+								usuario.getSenha(), 
+								usuario.getAuthorities());
+					} 
+				}
 			}
-			
-			
+		} catch (SignatureException e) {
+			response.getWriter().write("Token inválido");
+		} catch (ExpiredJwtException e){
+			response.getWriter().write("Token expirado, efetue login novamente");
+		} finally {			
+			liberacaoCors(response);
 		}
-		liberacaoCors(response);
+		
 		return null;
 	}
 	
