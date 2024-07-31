@@ -30,4 +30,8 @@ public class AcessoService {
 	public List<Acesso> buscarAcessoPorDesc(String desc) {
 		return acessoRepo.buscarAcessoPorDesc(desc.trim().toUpperCase());
 	}
+
+	public List<Acesso> findAll() {
+		return acessoRepo.findAll();
+	}
 }

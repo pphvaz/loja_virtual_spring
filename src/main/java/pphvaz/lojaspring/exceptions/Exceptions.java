@@ -1,4 +1,4 @@
-package pphvaz.lojaspring;
+package pphvaz.lojaspring.exceptions;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -25,6 +25,18 @@ import pphvaz.lojaspring.dto.ObjetoErroDto;
 @RestControllerAdvice
 @ControllerAdvice
 public class Exceptions extends ResponseEntityExceptionHandler {
+	
+	@ExceptionHandler(CustomExceptions.class)
+	public ResponseEntity<Object> handleExceptionCustom (CustomExceptions ex) {
+		
+		ObjetoErroDto objetoErroDto = new ObjetoErroDto();
+		
+		objetoErroDto.setError(ex.getMessage());
+		objetoErroDto.setCode(HttpStatus.OK.toString());
+		
+		return new ResponseEntity<Object>(objetoErroDto, HttpStatus.OK);
+	}
+	
 
 	/* Captura Exceções do Projeto */
 	@ExceptionHandler({ Exception.class, RuntimeException.class, Throwable.class })
@@ -44,6 +56,7 @@ public class Exceptions extends ResponseEntityExceptionHandler {
 			}
 		} else {
 			msg = ex.getMessage();
+			ex.printStackTrace();
 		}
 
 		objetoErroDto.setError(msg);

@@ -26,7 +26,7 @@ import pphvaz.lojaspring.repository.UsuarioRepository;
 public class JWTTokenAutenticacaoService {
 
 	/* TEMPO DE VALIDADE PARA EXPIRAR O TOKEN 11 DIAS*/
-	private static final long EXPIRATION_TIME = 950400000; 
+	private static final long EXPIRATION_TIME = 950400000;
 	
 	private static final String SECRET = "doqhwwsad1!";
 	
