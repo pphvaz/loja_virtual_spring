@@ -4,10 +4,14 @@ import java.io.Serializable;
 import java.util.Objects;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -18,13 +22,25 @@ import javax.persistence.Table;
 public class FormaDePagamento implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_forma_de_pagamento")
 	private Long id;
-	
+
 	@Column(nullable = false)
 	private String descricao;
+
+	@ManyToOne
+	@JoinColumn(name = "empresa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_fk"))
+	private PessoaJuridica empresa;
+
+	public Pessoa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(PessoaJuridica empresa) {
+		this.empresa = empresa;
+	}
 
 	public Long getId() {
 		return id;
@@ -58,5 +74,5 @@ public class FormaDePagamento implements Serializable {
 		FormaDePagamento other = (FormaDePagamento) obj;
 		return Objects.equals(id, other.id);
 	}
-	
+
 }

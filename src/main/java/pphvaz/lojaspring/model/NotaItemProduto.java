@@ -15,10 +15,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-
 @Entity
 @Table(name = "nota_item_produto")
-@SequenceGenerator(name = "seq_nota_item_prod", sequenceName = "seq_nota_item_prod", allocationSize = 1, initialValue = 1 )
+@SequenceGenerator(name = "seq_nota_item_prod", sequenceName = "seq_nota_item_prod", allocationSize = 1, initialValue = 1)
 public class NotaItemProduto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -26,26 +25,29 @@ public class NotaItemProduto implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_nota_item_prod")
 	private Long id;
-	
+
 	@Column(nullable = false)
 	private Double quantidade;
-	
+
 	@ManyToOne
-	@JoinColumn(
-			name = "nota_fiscal_compra_id",
-			nullable = false,
-			foreignKey = @ForeignKey(
-					value = ConstraintMode.CONSTRAINT, 
-					name = "nota_fiscal_compra_fk"))
+	@JoinColumn(name = "nota_fiscal_compra_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "nota_fiscal_compra_fk"))
 	private NotaFiscalCompra notaFiscalCompra;
-	
+
 	@ManyToOne
-	@JoinColumn(
-			name = "produto_id",
-			nullable = false,
-			foreignKey = @ForeignKey(
-					value = ConstraintMode.CONSTRAINT, name = "produto_fk"))
+	@JoinColumn(name = "produto_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "produto_fk"))
 	private Produto produto;
+
+	@ManyToOne
+	@JoinColumn(name = "empresa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_fk"))
+	private PessoaJuridica empresa;
+
+	public Pessoa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(PessoaJuridica empresa) {
+		this.empresa = empresa;
+	}
 
 	public Long getId() {
 		return id;
@@ -95,5 +97,5 @@ public class NotaItemProduto implements Serializable {
 		NotaItemProduto other = (NotaItemProduto) obj;
 		return Objects.equals(id, other.id);
 	}
-	
+
 }

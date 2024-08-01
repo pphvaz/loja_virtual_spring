@@ -5,67 +5,79 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 import javax.persistence.Column;
+import javax.persistence.ConstraintMode;
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-
 @Entity
-@Table(name ="produto")
+@Table(name = "produto")
 @SequenceGenerator(name = "seq_produto", sequenceName = "seq_produto", allocationSize = 1, initialValue = 1)
 public class Produto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_produto" )
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_produto")
 	private Long id;
-	
+
 	@Column(nullable = false)
 	private String tipoUnidade;
-	
+
 	@Column(nullable = false)
 	private String nome;
-	
 
 	@Column(columnDefinition = "text", length = 2000, nullable = false)
 	private String descricao;
-	
+
 	@Column(nullable = false)
 	private Boolean ativo = Boolean.TRUE;
 
 	@Column(nullable = false)
 	private Double peso;
-	
+
 	@Column(nullable = false)
 	private Double largura;
-	
+
 	@Column(nullable = false)
 	private Double altura;
-	
+
 	@Column(nullable = false)
 	private Double comprimento;
-	
+
 	@Column(nullable = false)
 	private BigDecimal valorVenda = BigDecimal.ZERO;
-	
+
 	@Column(nullable = false)
 	private Integer qtdEstoque = 0;
-	
+
 	private Integer qtdAlertaEstoque = 0;
-	
+
 	private String linkYoutube;
-	
-	private Boolean alertaQtdEstoque = Boolean.FALSE ;
-	
+
+	private Boolean alertaQtdEstoque = Boolean.FALSE;
+
 	private Integer qtdClick = 0;
-	
-	
+
 	/* ASSOCIAR NOTA ITEM PRODUTO */
-	
+
+	@ManyToOne
+	@JoinColumn(name = "empresa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_fk"))
+	private PessoaJuridica empresa;
+
+	public Pessoa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(PessoaJuridica empresa) {
+		this.empresa = empresa;
+	}
 
 	public Long getId() {
 		return id;
@@ -203,5 +215,5 @@ public class Produto implements Serializable {
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
 	}
-	
+
 }

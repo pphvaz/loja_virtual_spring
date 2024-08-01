@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -40,11 +41,30 @@ public class NotaFiscalVenda implements Serializable {
 
 	@Column(columnDefinition = "text", nullable = false)
 	private String pdf;
-	
+
 	@OneToOne
-	@JoinColumn(name = "venda_id", nullable = false, 
-	foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "venda_fk"))
+	@JoinColumn(name = "venda_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "venda_fk"))
 	private CompraVendaLojaVirtual venda;
+
+	@ManyToOne
+	@JoinColumn(name = "empresa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_fk"))
+	private PessoaJuridica empresa;
+
+	public Pessoa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(PessoaJuridica empresa) {
+		this.empresa = empresa;
+	}
+
+	public CompraVendaLojaVirtual getVenda() {
+		return venda;
+	}
+
+	public void setVenda(CompraVendaLojaVirtual venda) {
+		this.venda = venda;
+	}
 
 	public Long getId() {
 		return id;

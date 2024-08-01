@@ -36,7 +36,7 @@ public class ContaAPagar implements Serializable {
 
 	@Column(nullable = false)
 	private String descricao;
-	
+
 	@Column(nullable = false)
 	private BigDecimal valorTotal;
 
@@ -54,18 +54,24 @@ public class ContaAPagar implements Serializable {
 	private Date dtPagamento;
 
 	@ManyToOne(targetEntity = Pessoa.class)
-	@JoinColumn(
-			name = "pessoa_id", 
-			nullable = false, 
-			foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa_fk"))
+	@JoinColumn(name = "pessoa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "pessoa_fk"))
 	private Pessoa pessoa;
 
 	@ManyToOne(targetEntity = Pessoa.class)
-	@JoinColumn(
-			name = "fornecedor_id", 
-			nullable = false, 
-			foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "fornecedor_fk"))
+	@JoinColumn(name = "fornecedor_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "fornecedor_fk"))
 	private Pessoa fornecedor;
+
+	@ManyToOne
+	@JoinColumn(name = "empresa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_fk"))
+	private PessoaJuridica empresa;
+
+	public Pessoa getEmpresa() {
+		return empresa;
+	}
+
+	public void setEmpresa(PessoaJuridica empresa) {
+		this.empresa = empresa;
+	}
 
 	public Long getId() {
 		return id;
