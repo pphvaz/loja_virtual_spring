@@ -45,16 +45,7 @@ public class AcessoController {
 		
 		return ResponseEntity.ok(acessos);
 	}
-
-	// BUSCAR ACESSO POR DESCRICAO
-	@GetMapping("**/buscarPorDescricao/{descricao}")
-	private ResponseEntity<List<Acesso>> buscarPorDescricao(@PathVariable String descricao) {
-
-		List<Acesso> acessos = acessoServ.buscarAcessoPorDesc(descricao);
-		return ResponseEntity.ok(acessos);
-
-	}
-
+	
 	// CRIAR ACESSO NO DATABASE
 	@PostMapping
 	private ResponseEntity<Acesso> salvarAcesso(@RequestBody Acesso acesso, UriComponentsBuilder ucb) throws CustomExceptions {
@@ -71,6 +62,15 @@ public class AcessoController {
 
 		URI localizacaoDoNovoAcesso = ucb.path("/acesso/{id}").buildAndExpand(acessoSalvo.getId()).toUri();
 		return ResponseEntity.created(localizacaoDoNovoAcesso).body(acessoSalvo);
+	}
+
+	// BUSCAR ACESSO POR DESCRICAO
+	@GetMapping("**/buscar-por-descricao/{descricao}")
+	private ResponseEntity<List<Acesso>> buscarPorDescricao(@PathVariable String descricao) {
+
+		List<Acesso> acessos = acessoServ.buscarAcessoPorDesc(descricao);
+		return ResponseEntity.ok(acessos);
+
 	}
 
 	// DELETAR ACESSO NO DATABASE

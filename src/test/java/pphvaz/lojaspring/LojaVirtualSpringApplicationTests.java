@@ -28,7 +28,6 @@ class LojaVirtualSpringApplicationTests extends TestCase {
 	@Autowired
 	AcessoRepository acessoRepo;
 	
-	
 	@Autowired
 	TestRestTemplate restTemplate;
 	

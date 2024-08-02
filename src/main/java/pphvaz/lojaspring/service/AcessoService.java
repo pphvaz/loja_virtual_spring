@@ -10,7 +10,7 @@ import pphvaz.lojaspring.repository.AcessoRepository;
 
 @Service
 public class AcessoService {
-	
+
 	@Autowired
 	private AcessoRepository acessoRepo;
 
@@ -19,9 +19,8 @@ public class AcessoService {
 	}
 
 	public Acesso findById(Long idRequisitado) {
-        return acessoRepo.findById(idRequisitado)
-                .orElse(null);
-    }
+		return acessoRepo.findById(idRequisitado).orElse(null);
+	}
 
 	public void deleteById(Long id) {
 		acessoRepo.deleteById(id);
