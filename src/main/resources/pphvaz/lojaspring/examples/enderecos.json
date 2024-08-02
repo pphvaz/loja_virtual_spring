@@ -1,0 +1,9 @@
+{	
+  "ruaLogra": "Rua Exemplo",
+  "cep": "12345-678",
+  "numero": "123",
+  "bairro": "Bairro Exemplo",
+  "uf": "SP",
+  "cidade": "São Paulo",
+  "tipo_endereco": "RESIDENCIAL"
+}

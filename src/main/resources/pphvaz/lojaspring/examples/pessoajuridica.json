@@ -1,0 +1,12 @@
+{
+    "cnpj":"124.1234.12212",
+    "nome":"Nova Empresa",
+    "email":"empresanova@mail.com",
+    "telefone":"(12)91210-1232",
+    "inscEstadual":"1234",
+    "inscMunicipal":"124",
+    "nomeFantasia":"NomeFantasia",
+    "razaoSocial":"Naosei",
+    "tipoPessoa":"Juridica",
+    "categoria":"Limpeza"
+}

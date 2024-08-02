@@ -1,0 +1,9 @@
+{		
+	"id": 1,
+	"nome": "João Silva",
+	"email": "joao.silva@example.com",
+	"telefone": "+5511999999999",
+	"tipoPessoa": "Física",
+	"cpf":"123.123.123-20",
+	"data_nascimento":"1998-04-02"
+}

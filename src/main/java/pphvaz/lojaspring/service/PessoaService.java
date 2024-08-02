@@ -40,6 +40,11 @@ public class PessoaService {
 
 	public PessoaJuridica salvarPessoaJuridica(PessoaJuridica pessoaJuridica) {
 		
+		for (int i = 0; i < pessoaJuridica.getEnderecos().size(); i++) {
+			pessoaJuridica.getEnderecos().get(i).setPessoa(pessoaJuridica);
+			pessoaJuridica.getEnderecos().get(i).setEmpresa(pessoaJuridica);
+		}
+		
 		pessoaJuridica = pessoaRepo.save(pessoaJuridica);
 		
 		Usuario usuario = usuarioRepo.findByIdAndEmail(pessoaJuridica.getId(), pessoaJuridica.getEmail());
