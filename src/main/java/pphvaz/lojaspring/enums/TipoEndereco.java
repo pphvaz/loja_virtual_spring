@@ -3,7 +3,8 @@ package pphvaz.lojaspring.enums;
 public enum TipoEndereco {
 	
 	COBRANCA("Cobrança"),
-	ENTREGA("Entrega");
+	ENTREGA("Entrega"),
+	COMERCIAL("Comercial");
 	
 	private String descricao;
 	
