@@ -13,7 +13,7 @@ import pphvaz.lojaspring.model.PessoaJuridica;
 import pphvaz.lojaspring.service.PessoaService;
 
 @RestController
-@RequestMapping("/pessoa")
+@RequestMapping("/pessoas")
 public class PessoaController {
 
 	@Autowired

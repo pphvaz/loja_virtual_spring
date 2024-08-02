@@ -21,6 +21,9 @@ public class PessoaService {
 	
 	@Autowired
 	private UsuarioRepository usuarioRepo;
+	
+	@Autowired
+	private SendEmailService sendEmailServ;
 
 	/*
 	 * APLICAVEL A AMBAS
@@ -65,6 +68,20 @@ public class PessoaService {
 			usuarioRepo.save(usuario);
 			
 			usuarioRepo.inserirAcessoUsuarioPj(usuario.getId());
+			
+			StringBuilder mensagemHtml = new StringBuilder();
+			
+			mensagemHtml.append("<b>Segue abaixo seus dados de acesso para a Loja Virtual </b><br/>");
+			mensagemHtml.append("<b>Login: </b>" + pessoaJuridica.getEmail() + "<br/>");
+			mensagemHtml.append("<b>Senha: </b>").append(senha).append("<br/><br/>");
+			mensagemHtml.append("Obrigado!");
+			
+			try {				
+				sendEmailServ.enviarEmailHtml("Acesso Gerado para Loja Virtual", mensagemHtml.toString(), pessoaJuridica.getEmail());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 		}
 		
 		return pessoaJuridica;
