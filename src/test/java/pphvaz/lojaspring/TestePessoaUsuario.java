@@ -7,33 +7,74 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import junit.framework.TestCase;
 import pphvaz.lojaspring.controller.PessoaController;
+import pphvaz.lojaspring.enums.TipoEndereco;
 import pphvaz.lojaspring.exceptions.CustomExceptions;
+import pphvaz.lojaspring.model.Endereco;
 import pphvaz.lojaspring.model.PessoaJuridica;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,classes = LojaVirtualSpringApplication.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = LojaVirtualSpringApplication.class)
 public class TestePessoaUsuario extends TestCase {
-	
+
 	@Autowired
 	private PessoaController pessoaController;
-	
-	
+
 	@Test
 	public void testeCadastroPessoaJuridica() throws CustomExceptions {
-		
+
+		String random = RandomStringUtils.random(4, true, true);
+
 		PessoaJuridica pessoaJuridica = new PessoaJuridica();
-		
-		pessoaJuridica.setCnpj(RandomStringUtils.random(15, true, true));
-		pessoaJuridica.setNome("Magazine Luiza");
-		pessoaJuridica.setEmail("magalu@gmail.com");
+
+		pessoaJuridica.setCnpj(random);
+		pessoaJuridica.setNome("Loja " + random);
+		pessoaJuridica.setEmail(random + "mu@gmail.com");
 		pessoaJuridica.setTelefone("(12)99203-1234");
 		pessoaJuridica.setInscEstadual("INSC.SP124");
 		pessoaJuridica.setInscMunicipal("INSCJSC124");
 		pessoaJuridica.setNomeFantasia("Magazine Luiza");
 		pessoaJuridica.setRazaoSocial("1.000.000,00");
+		pessoaJuridica.setTipoPessoa("Juridica");
+		pessoaJuridica.setCategoria("TI");
+
+		Endereco endereco1 = new Endereco();
+
+		endereco1.setBairro("Bairro 2");
+		endereco1.setCidade("Cidade 2");
+		endereco1.setCep("CEP 2");
+		endereco1.setComplemento("Complemento 2");
+		endereco1.setEmpresa(pessoaJuridica);
+		endereco1.setNumero("23");
+		endereco1.setPessoa(pessoaJuridica);
+		endereco1.setRuaLogra("Rua Aleatoria 2");
+		endereco1.setTipoEndereco(TipoEndereco.COMERCIAL);
+		endereco1.setUf("SP");
+
+		Endereco endereco2 = new Endereco();
+
+		endereco2.setBairro("Bairro");
+		endereco2.setCidade("Cidade");
+		endereco2.setCep("CEP");
+		endereco2.setComplemento("Complemento");
+		endereco2.setEmpresa(pessoaJuridica);
+		endereco2.setNumero("23");
+		endereco2.setPessoa(pessoaJuridica);
+		endereco2.setRuaLogra("Rua Aleatoria");
+		endereco2.setTipoEndereco(TipoEndereco.ENTREGA);
+		endereco2.setUf("SP");
 		
-		pessoaController.salvarPessoaJuridica(pessoaJuridica);
+		pessoaJuridica.getEnderecos().add(endereco2);
+		pessoaJuridica.getEnderecos().add(endereco1);
+
+		pessoaJuridica = pessoaController.salvarPessoaJuridica(pessoaJuridica).getBody();
 		
+		assertEquals(true, pessoaJuridica.getId() > 0);
 		
+		for (Endereco endereco : pessoaJuridica.getEnderecos()) {
+			assertEquals(true, endereco.getId() > 0);
+		}
+		
+		assertEquals(2, pessoaJuridica.getEnderecos().size());
+
 	}
 
 }
