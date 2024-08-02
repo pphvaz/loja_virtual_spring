@@ -5,5 +5,5 @@
   "bairro": "Bairro Exemplo",
   "uf": "SP",
   "cidade": "São Paulo",
-  "tipo_endereco": "RESIDENCIAL"
+  "tipoEndereco": "RESIDENCIAL"
 }
