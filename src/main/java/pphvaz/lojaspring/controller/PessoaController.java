@@ -12,29 +12,28 @@ import pphvaz.lojaspring.exceptions.CustomExceptions;
 import pphvaz.lojaspring.model.PessoaJuridica;
 import pphvaz.lojaspring.service.PessoaService;
 
-
 @RestController
 @RequestMapping("/pessoa")
 public class PessoaController {
-	
+
 	@Autowired
 	private PessoaService pessoaServ;
-	
+
 	@PostMapping(value = "**/salvar-pessoa-juridica")
-	public ResponseEntity<PessoaJuridica> salvarPessoaJuridica(@RequestBody PessoaJuridica pessoaJuridica) throws CustomExceptions {
-		
+	public ResponseEntity<PessoaJuridica> salvarPessoaJuridica(@RequestBody PessoaJuridica pessoaJuridica)
+			throws CustomExceptions {
+
 		if (pessoaJuridica == null) {
 			throw new CustomExceptions("Pessoa juridica não pode ser nulo.");
 		}
-		
+
 		if (pessoaJuridica.getId() == null && pessoaServ.findByCnpj(pessoaJuridica.getCnpj()) != null) {
 			throw new CustomExceptions("CNPJ já cadastrado.");
 		}
-		
+
 		pessoaServ.salvarPessoaJuridica(pessoaJuridica);
-		
+
 		return new ResponseEntity<PessoaJuridica>(pessoaJuridica, HttpStatus.OK);
 	}
-	
-	
+
 }
