@@ -1,5 +1,7 @@
 package pphvaz.lojaspring.repository;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.Modifying;
@@ -12,6 +14,8 @@ import pphvaz.lojaspring.model.Usuario;
 @Repository
 public interface UsuarioRepository extends CrudRepository<Usuario, Long>{
 	
+	@Query(value = "SELECT u FROM Usuario u WHERE u.dataAtualSenha <= current_date - 90")
+	List<Usuario> usuarioSenhaVencida();
 	
 	@Query(value = "SELECT u FROM Usuario u WHERE u.login = ?1")
 	Usuario findUserByLogin(String login);
