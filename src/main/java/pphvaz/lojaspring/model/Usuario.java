@@ -53,13 +53,13 @@ public class Usuario implements UserDetails {
 
 	@ManyToOne
 	@JoinColumn(name = "empresa_id", nullable = false, foreignKey = @ForeignKey(value = ConstraintMode.CONSTRAINT, name = "empresa_fk"))
-	private PessoaJuridica empresa;
+	private Pessoa empresa;
 
 	public Pessoa getEmpresa() {
 		return empresa;
 	}
 
-	public void setEmpresa(PessoaJuridica empresa) {
+	public void setEmpresa(Pessoa empresa) {
 		this.empresa = empresa;
 	}
 
